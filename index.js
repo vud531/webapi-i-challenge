@@ -33,23 +33,23 @@ server.get('/api/users', (req, res) => {
     })
 })
 
-// server.get('/api/users/:id', async (req, res) => {
-//     try {
-//         const post = await DB.findById(req.params.id);
-
-//         if (post) {
-//         res.status(200).json(post);
-//         } else {
-//         res.status(404).json({ message: 'Post not found' });
-//         }
-//     } catch (error) {
-//         // log error to database
-//         console.log(error);
-//         res.status(500).json({
-//         message: 'Error retrieving the post',
-//         });
-//     }
-// });
+server.get('/api/users/:id', (req, res) => {
+    DB.findById(req.params.id)
+    .then(user => {
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    })
+    .catch (error => {
+        // log error to database
+        console.log(error);
+        res.status(500).json({
+        message: 'Error retrieving the User',
+        });
+    })
+});
 
 server.post('/api/users', (req, res) => {
     // console.log(req)
