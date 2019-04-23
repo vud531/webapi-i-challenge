@@ -73,39 +73,48 @@ server.post('/api/users', (req, res) => {
 
 });
 
-// server.delete('/api/posts/:id', async (req, res) => {
-//     try {
-//         const count = await DB.remove(req.params.id);
-//         if (count > 0) {
-//             res.status(200).json({ message: 'The post has been nuked' });
-//         } else {
-//             res.status(404).json({ message: 'The post could not be found' });
-//         }
-//     } catch (error) {
-//       // log error to database
-//         console.log(error);
-//         res.status(500).json({
-//         message: 'Error removing the hub',
-//         });
-//     }
-// });
+server.delete('/api/users/:id', async (req, res) => {
+    DB.remove(req.params.id)
+    .then(count => {
+        if (count > 0) {
+            res.status(200).json({ message: 'The user has been removed' });
+        } else {
+            res.status(404).json({ message: 'The user could not be found' });
+        }
+    })
+    .catch (error => {
+        {
+            // log error to database
+            console.log(error);
+            res.status(500).json({
+            message: 'Error removing the user',
+            });
+        }
+    }) 
+});
 
-// server.put('/api/posts/:id', async (req, res) => {
-//     try {
-//       const post = await DB.update(req.params.id, req.body);
-//       if (post) {
-//         res.status(200).json(post);
-//       } else {
-//         res.status(404).json({ message: 'The hub could not be found' });
-//       }
-//     } catch (error) {
-//       // log error to database
-//       console.log(error);
-//       res.status(500).json({
-//         message: 'Error updating the hub',
-//       });
-//     }
-//   });
+server.put('/api/users/:id', async (req, res) => {
+    if (!req.body.name || !req.body.bio) {
+        sendUserError(400, 'Must provide a name and a bio', res);
+        return;
+    }
+
+    DB.update(req.params.id, req.body)
+    .then(user => {
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ message: 'The user could not be found' });
+        }
+    })
+    .catch (error => {
+        // log error to database
+        console.log(error);
+        res.status(500).json({
+          message: 'Error updating the user',
+        });
+    }) 
+  });
 
 server.listen(5000, () => {
     console.log('\n*** Server Running on http://localhost:5000 ***\n');
