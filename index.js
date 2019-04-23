@@ -20,19 +20,20 @@ const sendUserError = (status, message, res) => {
 //     `)
 // })
 
-// server.get('/api/posts', async (req, res) => {
-//     try {
-//         const posts = await DB.find(req.query)
-//         res.status(200).json(posts)
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).json({
-//             message: 'Error retrieving the posts'
-//         })
-//     }
-// })
+server.get('/api/users', (req, res) => {
+    DB.find()
+    .then(result => {
+        res.status(200).json(result)
+    })
+    .catch (error => {
+        console.log(error)
+        res.status(500).json({
+            message: 'Error retrieving the users'
+        })
+    })
+})
 
-// server.get('/api/posts/:id', async (req, res) => {
+// server.get('/api/users/:id', async (req, res) => {
 //     try {
 //         const post = await DB.findById(req.params.id);
 
@@ -60,7 +61,7 @@ server.post('/api/users', (req, res) => {
             // log error to database
             console.log(error);
             res.status(500).json({
-            message: 'Error adding the user',
+            message: 'Error saving the user',
             });
         }
     }
