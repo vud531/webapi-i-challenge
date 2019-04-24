@@ -1,3 +1,6 @@
+require('dotenv').config(); // add this line as the first thing to run1
+const port = process.env.PORT || 5000;
+
 // implement your API here
 
 const express = require('express');
@@ -114,8 +117,8 @@ server.put('/api/users/:id', async (req, res) => {
           message: 'Error updating the user',
         });
     }) 
-  });
+});
 
-server.listen(5000, () => {
-    console.log('\n*** Server Running on http://localhost:5000 ***\n');
-  });
+server.listen(port, () => {
+    console.log(`\n*** Server Running on http://localhost:${port} ***\n`);
+});
